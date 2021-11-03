@@ -3,8 +3,7 @@
 export const mapService = {
     initMap,
     addMarker,
-    panTo,
-    startListening
+    panTo
 }
 
 var gMap;
@@ -63,7 +62,7 @@ function startListening() {
         //Determine the location where the user has clicked.
         var location = e.latLng;
         console.log('location.lat()', location.lat());
-        var place = prompt('what is this location?');
+        var place = prompt('what is this location name?');
         // saveLocation(place, location.lat(), location.lng());
 
         //Create a marker and placed it on the map.
