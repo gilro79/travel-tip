@@ -6,13 +6,15 @@ window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
+window.onMapClicked = onMapClicked;
 
 function onInit() {
     mapService.initMap()
         .then(() => {
             console.log('Map is ready');
         })
-        .catch(() => console.log('Error: cannot init map'));
+        .catch(() => console.log('Error: cannot init map'))
+        .then(() => mapService.getMapEv().addListener(mapService.getMap(), 'click', onMapClicked));
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -51,6 +53,26 @@ function onPanTo() {
     console.log('Panning the Map');
     mapService.panTo(35.6895, 139.6917);
 }
+
+function onMapClicked(ev) {
+    // console.log('mapClicked', ev);
+
+    const currLoc = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+    locService.getLocs().then(locs => {
+        locs.forEach(savedLoc => {
+            console.log(savedLoc, currLoc);
+            if (savedLoc.lat === currLoc.lat && savedLoc.lng === currLoc.lng) {
+                locService.updateLocation(currLoc, Date.now())
+            }
+        });
+    });
+    const place = prompt('what is this location name?');
+    const weather = 'cool'; // TODO
+    const createdAt = Date.now();
+
+}
+
+
 
 //  ====================================
 

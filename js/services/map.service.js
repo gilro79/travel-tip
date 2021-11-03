@@ -1,7 +1,7 @@
-
-
 export const mapService = {
     initMap,
+    getMapEv,
+    getMap,
     addMarker,
     panTo
 }
@@ -19,9 +19,18 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 zoom: 15
             })
             console.log('Map!', gMap);
-            startListening();
+            // startListening();
+            console.log('google.maps.event',google.maps.event);
         })
 
+}
+
+function getMapEv() {
+    return google.maps.event;
+}
+
+function getMap(){
+    return gMap;
 }
 
 function addMarker(loc) {
@@ -38,8 +47,6 @@ function panTo(lat, lng) {
     gMap.panTo(laLatLng);
 }
 
-
-
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
     const API_KEY = 'AIzaSyBqjYUOEt06B7mMyZeBnF5m_b3oKEZ4hPU'; //TODO: Enter your API Key
@@ -55,8 +62,8 @@ function _connectGoogleApi() {
 }
 
 
-function startListening() {
 
+function startListening() {
     google.maps.event.addListener(gMap, 'click', function (e) {
         console.log('inside listening');
         //Determine the location where the user has clicked.
