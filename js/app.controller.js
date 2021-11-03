@@ -1,5 +1,7 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
+import { storageService } from './services/storage.service.js'
+
 
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
@@ -15,6 +17,9 @@ function onInit() {
         })
         .catch(() => console.log('Error: cannot init map'))
         .then(() => mapService.getMapEv().addListener(mapService.getMap(), 'click', onMapClicked))
+
+        // todo: change to click event handler to the marker:
+        // .then(() => mapService.getMapEv().addListener(mapService.getMap(), 'click', onMapClicked))
         .then(renderLocs);
 }
 
@@ -26,9 +31,9 @@ function getPosition() {
     })
 }
 
-function onAddMarker() {
-    console.log('Adding a marker');
-    mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
+function onAddMarker(loc) {
+    mapService.addMarker( loc );
+    // mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
 }
 
 function onGetLocs() {
@@ -56,7 +61,6 @@ function onPanTo() {
 }
 
 function onMapClicked(ev) {
-    console.log('mapClicked', ev);
 
     const currLoc = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
 
@@ -66,22 +70,33 @@ function onMapClicked(ev) {
         //     // createNewLoc();
         //     // addLoc();
         // }
-        console.log('locs', locs);
         // all the following and more will happen inside the create and add loc.
         // const weather = 'cool'; 
         // const createdAt = Date.now();
         const place = prompt('what is this location name?');
         locService.addLoc(place, currLoc.lat, currLoc.lng);
+        onAddMarker(currLoc);
     }).then(renderLocs)
 
 }
 
 function renderLocs() {
-    console.log('Im rendering');
     locService.getLocs().then(locs => {
         const strHtmls = locs.map(loc => {
+            const lat = loc.lat
+            const lng = loc.lng
+            onAddMarker({lat,lng})
+            console.log('loc', loc);
             return `
-            <tr><td>${loc.id}</td><td>${loc.name}</td></tr>
+            <tr>
+            <td>${loc.id}</td>
+            <td>${loc.name}</td>
+            <td>${loc.lat}</td>
+            <td>${loc.lng}</td>
+            <td>${loc.weather}</td>
+            
+            
+            </tr>
             `
         })
         document.querySelector('.locs').innerHTML = strHtmls.join('');
