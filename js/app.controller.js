@@ -51,3 +51,28 @@ function onPanTo() {
     console.log('Panning the Map');
     mapService.panTo(35.6895, 139.6917);
 }
+
+//  ====================================
+
+google.maps.event.addListener(map, 'click', function (e) {
+
+    //Determine the location where the user has clicked.
+    var location = e.latLng;
+    console.log('location.lat()', location.lat());
+    var place = prompt('what is this location?');
+    // saveLocation(place, location.lat(), location.lng());
+
+    //Create a marker and placed it on the map.
+    var marker = new google.maps.Marker({
+        position: location,
+        map: map
+    });
+
+    //Attach click event handler to the marker.
+    // google.maps.event.addListener(marker, "click", function (e) {
+    //     var infoWindow = new google.maps.InfoWindow({
+    //         content: 'Latitude: ' + location.lat() + '<br />Longitude: ' + location.lng()
+    //     });
+    //     infoWindow.open(map, marker);
+    // });
+});
