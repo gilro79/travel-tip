@@ -1,0 +1,5 @@
+Tal: open google geo location
+
+
+
+Roy: use the google maps api and restrict it
