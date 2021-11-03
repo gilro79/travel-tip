@@ -14,7 +14,8 @@ function onInit() {
             console.log('Map is ready');
         })
         .catch(() => console.log('Error: cannot init map'))
-        .then(() => mapService.getMapEv().addListener(mapService.getMap(), 'click', onMapClicked));
+        .then(() => mapService.getMapEv().addListener(mapService.getMap(), 'click', onMapClicked))
+        .then(renderLocs);
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -55,22 +56,36 @@ function onPanTo() {
 }
 
 function onMapClicked(ev) {
-    // console.log('mapClicked', ev);
+    console.log('mapClicked', ev);
 
     const currLoc = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
-    
-    locService.getLocs().then(locs => {
-        if(isLocSaved(currLoc, locs)) updateLoc(currLoc, Date.now());
-        else {
-            // createNewLoc();
-            // addLoc();
-        }
-    });
-    // all the following and more will happen inside the create and add loc.
-    // const place = prompt('what is this location name?');
-    // const weather = 'cool'; 
-    // const createdAt = Date.now();
 
+    locService.getLocs().then(locs => {
+        // if(isLocSaved(currLoc, locs)) updateLoc(currLoc, Date.now());
+        // else {
+        //     // createNewLoc();
+        //     // addLoc();
+        // }
+        console.log('locs', locs);
+        // all the following and more will happen inside the create and add loc.
+        // const weather = 'cool'; 
+        // const createdAt = Date.now();
+        const place = prompt('what is this location name?');
+        locService.addLoc(place, currLoc.lat, currLoc.lng);
+    }).then(renderLocs)
+
+}
+
+function renderLocs() {
+    console.log('Im rendering');
+    locService.getLocs().then(locs => {
+        const strHtmls = locs.map(loc => {
+            return `
+            <tr><td>${loc.id}</td><td>${loc.name}</td></tr>
+            `
+        })
+        document.querySelector('.locs').innerHTML = strHtmls.join('');
+    })
 }
 
 function isLocSaved(currLoc, locs) {
