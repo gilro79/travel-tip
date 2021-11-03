@@ -3,7 +3,8 @@
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    startListening
 }
 
 var gMap;
@@ -19,7 +20,9 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 zoom: 15
             })
             console.log('Map!', gMap);
+            startListening();
         })
+
 }
 
 function addMarker(loc) {
@@ -50,4 +53,31 @@ function _connectGoogleApi() {
         elGoogleApi.onload = resolve;
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
+}
+
+
+function startListening() {
+
+    google.maps.event.addListener(gMap, 'click', function (e) {
+        console.log('inside listening');
+        //Determine the location where the user has clicked.
+        var location = e.latLng;
+        console.log('location.lat()', location.lat());
+        var place = prompt('what is this location?');
+        // saveLocation(place, location.lat(), location.lng());
+
+        //Create a marker and placed it on the map.
+        var marker = new google.maps.Marker({
+            position: location,
+            map: gMap
+        });
+
+        //Attach click event handler to the marker.
+        // google.maps.event.addListener(marker, "click", function (e) {
+        //     var infoWindow = new google.maps.InfoWindow({
+        //         content: 'Latitude: ' + location.lat() + '<br />Longitude: ' + location.lng()
+        //     });
+        //     infoWindow.open(map, marker);
+        // });
+    });
 }
