@@ -58,18 +58,24 @@ function onMapClicked(ev) {
     // console.log('mapClicked', ev);
 
     const currLoc = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+    
     locService.getLocs().then(locs => {
-        locs.forEach(savedLoc => {
-            console.log(savedLoc, currLoc);
-            if (savedLoc.lat === currLoc.lat && savedLoc.lng === currLoc.lng) {
-                locService.updateLocation(currLoc, Date.now())
-            }
-        });
+        if(isLocSaved(currLoc, locs)) updateLoc(currLoc, Date.now());
+        else {
+            // createNewLoc();
+            // addLoc();
+        }
     });
-    const place = prompt('what is this location name?');
-    const weather = 'cool'; // TODO
-    const createdAt = Date.now();
+    // all the following and more will happen inside the create and add loc.
+    // const place = prompt('what is this location name?');
+    // const weather = 'cool'; 
+    // const createdAt = Date.now();
 
+}
+
+function isLocSaved(currLoc, locs) {
+    // move this function to loc.service
+    return savedLoc.lat === currLoc.lat && savedLoc.lng === currLoc.lng;
 }
 
 
