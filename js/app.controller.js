@@ -61,23 +61,11 @@ function onPanTo() {
 }
 
 function onMapClicked(ev) {
-
     const currLoc = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
-
-    locService.getLocs().then(locs => {
-        // if(isLocSaved(currLoc, locs)) updateLoc(currLoc, Date.now());
-        // else {
-        //     // createNewLoc();
-        //     // addLoc();
-        // }
-        // all the following and more will happen inside the create and add loc.
-        // const weather = 'cool'; 
-        // const createdAt = Date.now();
-        const place = prompt('what is this location name?');
-        locService.addLoc(place, currLoc.lat, currLoc.lng);
-        onAddMarker(currLoc);
-    }).then(renderLocs)
-
+    const place = prompt('what is this location name?');
+    locService.addLoc(place, currLoc.lat, currLoc.lng);
+    onAddMarker(currLoc);
+    renderLocs();
 }
 
 function renderLocs() {
@@ -86,7 +74,6 @@ function renderLocs() {
             const lat = loc.lat
             const lng = loc.lng
             onAddMarker({lat,lng})
-            console.log('loc', loc);
             return `
             <tr>
             <td>${loc.id}</td>
@@ -94,8 +81,6 @@ function renderLocs() {
             <td>${loc.lat}</td>
             <td>${loc.lng}</td>
             <td>${loc.weather}</td>
-            
-            
             </tr>
             `
         })
