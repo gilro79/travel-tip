@@ -2,6 +2,7 @@ export const mapService = {
     initMap,
     getMapEv,
     getMap,
+    getMarker,
     addMarker,
     panTo
 }
@@ -19,7 +20,7 @@ function initMap(lat = 32.047104, lng = 34.832384) {
             })
             console.log('Map!', gMap);
             // startListening();
-            console.log('google.maps.event',google.maps.event);
+            console.log('google.maps.event', google.maps.event);
         })
 
 }
@@ -28,8 +29,16 @@ function getMapEv() {
     return google.maps.event;
 }
 
-function getMap(){
+function getMap() {
     return gMap;
+}
+
+function getMarker() {
+    console.log('hi');
+    return new google.maps.Marker({
+        position: location,
+        map: gMap
+    });
 }
 
 function addMarker(loc) {
@@ -69,7 +78,7 @@ function startListening() {
         var location = e.latLng;
         console.log('location.lat()', location.lat());
         var place = prompt('what is this location name?');
-        // saveLocation(place, location.lat(), location.lng());
+        saveLocation(place, location.lat(), location.lng());
 
         //Create a marker and placed it on the map.
         var marker = new google.maps.Marker({
@@ -77,12 +86,12 @@ function startListening() {
             map: gMap
         });
 
-        //Attach click event handler to the marker.
+        // Attach click event handler to the marker.
         // google.maps.event.addListener(marker, "click", function (e) {
         //     var infoWindow = new google.maps.InfoWindow({
         //         content: 'Latitude: ' + location.lat() + '<br />Longitude: ' + location.lng()
         //     });
         //     infoWindow.open(map, marker);
-        // });
+    //     });
     });
 }

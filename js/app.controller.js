@@ -9,6 +9,8 @@ window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onMapClicked = onMapClicked;
+window.onMarkerClicked = onMarkerClicked;
+
 
 function onInit() {
     mapService.initMap()
@@ -17,9 +19,7 @@ function onInit() {
         })
         .catch(() => console.log('Error: cannot init map'))
         .then(() => mapService.getMapEv().addListener(mapService.getMap(), 'click', onMapClicked))
-
-        // todo: change to click event handler to the marker:
-        // .then(() => mapService.getMapEv().addListener(mapService.getMap(), 'click', onMapClicked))
+        .then(() => mapService.getMapEv().addListener(mapService.getMarker(), 'click', onMarkerClicked))
         .then(renderLocs);
 }
 
@@ -93,6 +93,9 @@ function isLocSaved(currLoc, locs) {
     return savedLoc.lat === currLoc.lat && savedLoc.lng === currLoc.lng;
 }
 
+function onMarkerClicked(ev) {
+    console.log('ev',ev);
+}
 
 
 //  ====================================
